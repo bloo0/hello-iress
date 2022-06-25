@@ -1,0 +1,29 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: iress-k8s
+  region: ap-southeast-1
+  version: '1.21'
+  tags:
+    Terraform: "false"
+    Env: npr
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+  - metadata:
+      name: aws-load-balancer-controller
+      namespace: kube-system
+    wellKnownPolicies:
+      awsLoadBalancerController: true
+
+#karpenter:
+#  version: '0.6.5'
+#  createServiceAccount: true
+
+vpc:
+  subnets:
+    private:
+      ap-southeast-1a: { id: subnet-ID }
+      ap-southeast-2b: { id: 	subnet-ID }

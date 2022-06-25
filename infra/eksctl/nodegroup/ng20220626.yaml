@@ -1,0 +1,57 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: iress-k8s
+  region: ap-southeast-1
+  version: '1.21'
+  tags:
+    Terraform: "false"
+    Env: npr
+
+iam:
+  withOIDC: true
+  serviceAccounts:
+  - metadata:
+      name: aws-load-balancer-controller
+      namespace: kube-system
+    wellKnownPolicies:
+      awsLoadBalancerController: true
+
+#karpenter:
+#  version: '0.6.5'
+#  createServiceAccount: true
+
+vpc:
+  subnets:
+    private:
+      ap-southeast-1a: { id: subnet-ID }
+      ap-southeast-2b: { id: 	subnet-ID }
+
+nodeGroups:
+  - name: worker-ng-20220626
+    labels: { 
+      role: workers,
+      purpose: applications 
+    }
+    privateNetworking: true
+    volumeSize: 100
+    minSize: 2
+    maxSize: 3
+    desiredCapacity: 2
+    instanceType: t3.medium
+    securityGroups:
+      attachIDs: ["sg-ID"]
+    #instancesDistribution:
+    #    maxPrice: 0.0480
+    #    instanceTypes: ["t3.medium"] # At least one instance type should be specified
+    #    onDemandBaseCapacity: 0
+    #    onDemandPercentageAboveBaseCapacity: 50
+    #    spotInstancePools: 2
+    targetGroupARNs:
+      - arn:aws:elasticloadbalancing:ap-southeast-1:AWS_ACCOUNT_ID:targetgroup/hello-tg-30100/3a39f85d3fc1ba7c
+      - arn:aws:elasticloadbalancing:ap-southeast-1:AWS_ACCOUNT_ID:targetgroup/welcome-tg-30101/4472da939efbdcf5
+    tags:
+      Terraform: "false"
+      Env: npr
+      Project: Iress

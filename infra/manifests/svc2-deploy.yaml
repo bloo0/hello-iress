@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hello
+  name: hello
+  namespace: iress
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+    spec:
+      nodeSelector:
+        purpose: applications
+      restartPolicy: Always
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: env-hello
+            #- secretRef:
+            #    name: secrets-hello
+          image: AWS_ACCOUNT_ID.dkr.ecr.ap-southeast-1.amazonaws.com/hello:build-e42594d7-a30e-43f1-91d0-f0b360d875a0
+          imagePullPolicy: IfNotPresent
+          name: matchfit-hello
+          ports:
+            - containerPort: 5051
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hello
+  name: hello
+  namespace: iress
+spec:
+  type: NodePort
+  ports:
+    - name: "3003"
+      port: 3001
+      targetPort: 5051
+      nodePort: 30101
+  selector:
+    app: hello
