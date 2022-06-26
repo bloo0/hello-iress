@@ -2,7 +2,7 @@ name: hello service
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ develop ]
     paths:
       - 'app/svc1/**'
 

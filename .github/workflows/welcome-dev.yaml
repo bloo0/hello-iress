@@ -2,7 +2,7 @@ name: welcome service
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ develop ]
     paths:
       - 'app/svc2/**'
 
