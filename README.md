@@ -35,13 +35,13 @@ Provision AWS resources in order:
 3. ecr
 4. alb
 
-Move to youre selected AWS resource and run the following Terraform command
+Move to your selected AWS resource and run the following Terraform command
 ```sh
 terraform plan
 terraform apply --auto-approve
 ```
 
-Terraform workspace is optional.
+**Terraform workspace is optional.
 
 
 CICD Pipeline (GitHub Actions) will trigger once the following changes are met:
@@ -63,4 +63,4 @@ CICD Pipeline (GitHub Actions) will trigger once the following changes are met:
 11. Use scanning tool for dependecies of the app.
 
 
-> Note: For other clarification, let's discuss it further. Thank you.
+> Note: `For other clarification, let's discuss it further. Thank you.`
