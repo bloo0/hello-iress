@@ -200,6 +200,21 @@ module "iress_alb" {
       actions = [
         {
           type               = "forward"
+          target_group_index = 0
+        }
+      ]
+
+      conditions = [{
+        path_patterns = ["/", "/test"]
+      }]
+    },
+    {
+      https_listener_index = 0
+      priority             = 3
+
+      actions = [
+        {
+          type               = "forward"
           target_group_index = 1
         }
       ]
